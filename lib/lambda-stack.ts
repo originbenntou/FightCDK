@@ -11,7 +11,7 @@ export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props)
 
-    const yourLambda = new lambda.Function(this, 'YourLambda', {
+    const yourLambda = new lambda.Function(this, 'HelloWorld', {
       runtime: lambda.Runtime.NODEJS_14_X,
       code: lambda.Code.fromAsset('lambda'),
       handler: 'index.handler',
@@ -20,7 +20,7 @@ export class LambdaStack extends cdk.Stack {
 
     const lambdaIntegration = new apigw.LambdaIntegration(yourLambda)
 
-    const resource = props.apiGw.root.addResource('my-resource')
+    const resource = props.apiGw.root.addResource('hello')
     resource.addMethod('ANY', lambdaIntegration)
   }
 }

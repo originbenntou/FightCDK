@@ -8,12 +8,11 @@ export class ApiGatewayStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
-    this.apiGw = new apigw.RestApi(this, 'YourApi', {
-      restApiName: 'YourApi',
-    })
-
-    new cdk.CfnOutput(this, 'ApiGatewayURL', {
-      value: this.apiGw.url,
+    this.apiGw = new apigw.RestApi(this, 'HelloApi', {
+      restApiName: 'HelloApi',
+      deployOptions: {
+        stageName: 'v1',
+      },
     })
   }
 }

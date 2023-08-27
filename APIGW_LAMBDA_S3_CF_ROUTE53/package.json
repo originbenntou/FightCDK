@@ -2,13 +2,13 @@
   "name": "fight_cdk",
   "version": "0.1.0",
   "bin": {
-    "fight_cdk": "bin/fight_cdk.js"
+    "fight_cdk": "APIGW_LAMBDA_S3_CF_ROUTE53/bin/fight_cdk.js"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "test": "jest",
-    "cdk": "cdk"
+    "build": "../node_modules/.bin/tsc",
+    "watch": "../node_modules/.bin/tsc -w",
+    "test": "../node_modules/.bin/jest",
+    "cdk": "../node_modules/.bin/cdk"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

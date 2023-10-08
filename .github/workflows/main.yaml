@@ -6,6 +6,7 @@ on:
 jobs:
   cdk_deploy:
     runs-on: ubuntu-latest
+    environment: GITHUB_ACTIONS_OIDC_TEST
     permissions:
       id-token: write
       contents: read

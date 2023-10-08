@@ -30,12 +30,12 @@ jobs:
           echo "${{ secrets.CUSTOM_DOMAIN }}\n" >> .env
           echo "${{ secrets.CERTIFICATE_ARN }}\n" >> .env
           echo "${{ secrets.HOSTED_ZONE_ID }}\n" >> .env
-          cat .env
 
       - name: Install and deploy using CDK
         run: |
           npm install -g aws-cdk
           npm install -g pnpm
           cd apigw_lambda_s3_cf_route53
+          cat .env
           pnpm install
           cdk deploy --all --require-approval never

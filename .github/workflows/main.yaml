@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  s3ls:
+  cdk_deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -22,4 +22,4 @@ jobs:
           node-version: 18.x
 
       - if: contains(github.event_name, 'push')
-        run: npm i -g aws-cdk && cdk deploy --all
+        run: npm i -g aws-cdk && cd apigw_lambda_s3_cf_route53 && cdk deploy --all

@@ -22,4 +22,4 @@ jobs:
           node-version: 18.x
 
       - if: contains(github.event_name, 'push')
-        run: npm i -g aws-cdk && cd apigw_lambda_s3_cf_route53 && cdk deploy --all
+        run: npm i -g aws-cdk && npm i && cd apigw_lambda_s3_cf_route53 && cdk deploy --all

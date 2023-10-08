@@ -27,6 +27,7 @@ jobs:
       - name: Install and deploy using CDK
         run: |
           npm install -g aws-cdk
+          npm install -g pnpm
           cd apigw_lambda_s3_cf_route53
-          npm install
-          cdk deploy --all
+          pnpm install
+          cdk deploy --all --require-approval never

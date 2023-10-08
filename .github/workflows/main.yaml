@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Install and deploy using CDK!
+      - name: Install and deploy using CDK!!
         run: |
           npm install -g aws-cdk
           npm install -g pnpm

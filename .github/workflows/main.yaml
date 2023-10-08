@@ -25,9 +25,12 @@ jobs:
           node-version: 18.x
 
       - run: |
-          echo ${{ secrets.CUSTOM_DOMAIN }}
-          echo ${{ secrets.CERTIFICATE_ARN }}
-          echo ${{ secrets.HOSTED_ZONE_ID }}
+          cd apigw_lambda_s3_cf_route53
+          toucn .env
+          echo ${{ secrets.CUSTOM_DOMAIN }} >> .env
+          echo ${{ secrets.CERTIFICATE_ARN }} >> .env
+          echo ${{ secrets.HOSTED_ZONE_ID }} >> .env
+          cat .env
 
 #      - name: Install and deploy using CDK
 #        run: |

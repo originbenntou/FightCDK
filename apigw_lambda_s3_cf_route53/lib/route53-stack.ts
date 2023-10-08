@@ -1,26 +1,33 @@
-import * as cdk from 'aws-cdk-lib'
-import { type Construct } from 'constructs'
-import * as route53 from 'aws-cdk-lib/aws-route53'
-import * as route53Targets from 'aws-cdk-lib/aws-route53-targets'
-import type * as apigw from 'aws-cdk-lib/aws-apigateway'
+import {
+  type App,
+  Stack,
+  type StackProps,
+  aws_route53,
+  aws_route53_targets,
+  type aws_apigateway, CfnOutput
+} from 'aws-cdk-lib'
 
-interface Route53StackProps extends cdk.StackProps {
+interface Route53StackProps extends StackProps {
   hostedZoneId: string
   customDomain: string
-  apiGw: apigw.RestApi
+  apiGw: aws_apigateway.RestApi
 }
 
-export class Route53Stack extends cdk.Stack {
-  constructor (scope: Construct, id: string, props: Route53StackProps) {
+export class Route53Stack extends Stack {
+  constructor (scope: App, id: string, props: Route53StackProps) {
     super(scope, id, props)
 
-    new route53.ARecord(this, 'AliasRecord', {
+    new aws_route53.ARecord(this, 'AliasRecord', {
       recordName: props.customDomain,
-      target: route53.RecordTarget.fromAlias(new route53Targets.ApiGateway(props.apiGw)),
-      zone: route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
+      target: aws_route53.RecordTarget.fromAlias(new aws_route53_targets.ApiGateway(props.apiGw)),
+      zone: aws_route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
         hostedZoneId: props.hostedZoneId,
         zoneName: props.customDomain
       })
+    })
+
+    new CfnOutput(this, 'ApiUrl', {
+      value: `https://${props.customDomain}/${props.apiGw.deploymentStage.stageName}/hello`
     })
   }
 }

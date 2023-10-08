@@ -1,19 +1,24 @@
-import * as cdk from 'aws-cdk-lib'
-import { type Construct } from 'constructs'
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
-import type * as s3 from 'aws-cdk-lib/aws-s3'
-import { type OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront'
+import {
+  type App,
+  Stack,
+  type StackProps,
+  Duration,
+  aws_cloudfront,
+  type aws_s3, CfnOutput
+} from 'aws-cdk-lib'
 
-interface CloudFrontProps extends cdk.StackProps {
-  bucket: s3.Bucket
-  oai: OriginAccessIdentity
+interface CloudFrontProps extends StackProps {
+  bucket: aws_s3.Bucket
+  oai: aws_cloudfront.OriginAccessIdentity
 
 }
-export class CloudFrontStack extends cdk.Stack {
-  constructor (scope: Construct, id: string, props: CloudFrontProps) {
+export class CloudFrontStack extends Stack {
+  public readonly cfn_distribution: aws_cloudfront.CloudFrontWebDistribution
+
+  constructor (scope: App, id: string, props: CloudFrontProps) {
     super(scope, id, props)
 
-    const distribution = new cloudfront.CloudFrontWebDistribution(this, 'StaticWebsiteDistribution', {
+    this.cfn_distribution = new aws_cloudfront.CloudFrontWebDistribution(this, 'StaticWebsiteDistribution', {
       originConfigs: [
         {
           s3OriginSource: {
@@ -24,18 +29,18 @@ export class CloudFrontStack extends cdk.Stack {
             {
               isDefaultBehavior: true,
               compress: true,
-              allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
-              defaultTtl: cdk.Duration.seconds(3600),
-              maxTtl: cdk.Duration.seconds(86400),
-              minTtl: cdk.Duration.seconds(0)
+              // allowedMethods: aws_cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: Duration.seconds(3600),
+              maxTtl: Duration.seconds(86400),
+              minTtl: Duration.seconds(0)
             }
           ]
         }
       ]
     })
 
-    new cdk.CfnOutput(this, 'WebsiteUrl', {
-      value: `https://${distribution.distributionDomainName}`
+    new CfnOutput(this, 'WebsiteUrl', {
+      value: `https://${this.cfn_distribution.distributionDomainName}`
     })
   }
 }

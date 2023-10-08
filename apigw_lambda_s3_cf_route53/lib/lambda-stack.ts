@@ -1,25 +1,29 @@
-import * as cdk from 'aws-cdk-lib'
-import { type Construct } from 'constructs'
-import * as lambda from 'aws-cdk-lib/aws-lambda'
-import * as apigw from 'aws-cdk-lib/aws-apigateway'
+import {
+  type App,
+  Stack,
+  type StackProps,
+  PhysicalName,
+  aws_lambda,
+  aws_apigateway
+} from 'aws-cdk-lib'
 
-interface LambdaStackProps extends cdk.StackProps {
-  apiGw: apigw.RestApi
+interface LambdaStackProps extends StackProps {
+  apiGw: aws_apigateway.RestApi
 }
 
-export class LambdaStack extends cdk.Stack {
-  constructor (scope: Construct, id: string, props: LambdaStackProps) {
+export class LambdaStack extends Stack {
+  constructor (scope: App, id: string, props: LambdaStackProps) {
     super(scope, id, props)
 
     // FIXME: DockerImage
-    const yourLambda = new lambda.Function(this, 'HelloWorld', {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset('lambda'),
+    const yourLambda = new aws_lambda.Function(this, 'HelloWorld', {
+      runtime: aws_lambda.Runtime.NODEJS_18_X,
+      code: aws_lambda.Code.fromAsset('lambda'),
       handler: 'index.handler',
-      functionName: cdk.PhysicalName.GENERATE_IF_NEEDED
+      functionName: PhysicalName.GENERATE_IF_NEEDED
     })
 
-    const lambdaIntegration = new apigw.LambdaIntegration(yourLambda)
+    const lambdaIntegration = new aws_apigateway.LambdaIntegration(yourLambda)
 
     const resource = props.apiGw.root.addResource('hello')
     resource.addMethod('ANY', lambdaIntegration)

@@ -1,12 +1,15 @@
-import * as cdk from 'aws-cdk-lib'
-import { type Construct } from 'constructs'
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
+import {
+  type App,
+  Stack,
+  type StackProps,
+  aws_cloudfront
+} from 'aws-cdk-lib'
 
-export class OaiStack extends cdk.Stack {
-  public readonly oai: cloudfront.OriginAccessIdentity
-  constructor (scope: Construct, id: string, props?: cdk.StackProps) {
+export class OaiStack extends Stack {
+  public readonly oai: aws_cloudfront.OriginAccessIdentity
+  constructor (scope: App, id: string, props?: StackProps) {
     super(scope, id, props)
 
-    this.oai = new cloudfront.OriginAccessIdentity(this, 'StaticWebsiteOAI')
+    this.oai = new aws_cloudfront.OriginAccessIdentity(this, 'StaticWebsiteOAI')
   }
 }

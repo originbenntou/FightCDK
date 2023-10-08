@@ -1,21 +1,24 @@
-import * as cdk from 'aws-cdk-lib'
-import { type Construct } from 'constructs'
-import * as apigw from 'aws-cdk-lib/aws-apigateway'
-import * as acm from 'aws-cdk-lib/aws-certificatemanager'
+import {
+  type App,
+  Stack,
+  type StackProps,
+  aws_apigateway,
+  aws_certificatemanager
+} from 'aws-cdk-lib'
 
-interface CustomApiGWProps extends cdk.StackProps {
+interface CustomApiGWProps extends StackProps {
   customDomain: string
   certificateArn: string
 }
 
-export class ApiGatewayStack extends cdk.Stack {
-  public readonly apiGw: apigw.RestApi
+export class ApiGatewayStack extends Stack {
+  public readonly apiGw: aws_apigateway.RestApi
 
-  constructor (scope: Construct, id: string, props: CustomApiGWProps) {
+  constructor (scope: App, id: string, props: CustomApiGWProps) {
     super(scope, id, props)
 
     // FIXME: v1,v2...複数バージョンの管理方法を考える
-    this.apiGw = new apigw.RestApi(this, 'HelloApi', {
+    this.apiGw = new aws_apigateway.RestApi(this, 'HelloApi', {
       restApiName: 'HelloApi',
       deployOptions: {
         stageName: 'v1'
@@ -25,8 +28,8 @@ export class ApiGatewayStack extends cdk.Stack {
     this.apiGw.addDomainName('CustomDomain', {
       domainName: props.customDomain,
       basePath: 'v1',
-      certificate: acm.Certificate.fromCertificateArn(this, 'Certificate', props.certificateArn),
-      endpointType: apigw.EndpointType.REGIONAL
+      certificate: aws_certificatemanager.Certificate.fromCertificateArn(this, 'Certificate', props.certificateArn),
+      endpointType: aws_apigateway.EndpointType.REGIONAL
     })
   }
 }

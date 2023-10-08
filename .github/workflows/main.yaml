@@ -26,7 +26,7 @@ jobs:
 
       - run: |
           cd apigw_lambda_s3_cf_route53
-          toucn .env
+          touch .env
           echo ${{ secrets.CUSTOM_DOMAIN }} >> .env
           echo ${{ secrets.CERTIFICATE_ARN }} >> .env
           echo ${{ secrets.HOSTED_ZONE_ID }} >> .env

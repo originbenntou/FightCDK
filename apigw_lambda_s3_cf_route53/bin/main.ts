@@ -33,16 +33,16 @@ apiGatewayStack.addDependency(lambdaStack)
 route53Stack.addDependency(apiGatewayStack)
 
 // frontend
-// const oaiStack = new OaiStack(app, 'OaiStack')
-// const s3Stack = new S3Stack(app, 'S3Stack', {
-//   oai: oaiStack.oai
-// })
-// const cloudfrontStack = new CloudFrontStack(app, 'CloudFrontStack', {
-//   bucket: s3Stack.bucket,
-//   oai: oaiStack.oai
-// })
+const oaiStack = new OaiStack(app, 'OaiStack')
+const s3Stack = new S3Stack(app, 'S3Stack', {
+  oai: oaiStack.oai
+})
+const cloudfrontStack = new CloudFrontStack(app, 'CloudFrontStack', {
+  bucket: s3Stack.bucket,
+  oai: oaiStack.oai
+})
 
-// s3Stack.addDependency(oaiStack)
-// cloudfrontStack.addDependency(s3Stack)
+s3Stack.addDependency(oaiStack)
+cloudfrontStack.addDependency(s3Stack)
 
 app.synth()
